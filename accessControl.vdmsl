@@ -1,0 +1,68 @@
+-- CSC2021 Coursework exercise 
+-- semester 2 2016
+
+-- Access Control model
+
+-- Update this model with your answers to the questions and
+-- submit the final model to Ness.
+
+-- Modified by Dylan McKee on 02/04/2016.
+
+
+types
+Action = <read>|<write>|<append>|<login>|<root>;
+ 
+Resource = token;
+Privilege :: res: Resource
+             act: Action;
+
+Person = token;
+Allocation = map Person to set of Privilege;
+          
+values
+
+ReadFile1 = mk_Privilege(mk_token("File1"),<read>);
+WriteFile1 = mk_Privilege(mk_token("File1"),<write>);
+ReadFile2 = mk_Privilege(mk_token("File2"),<read>);
+AppendFile2 = mk_Privilege(mk_token("File2"),<append>);
+LoginServer = mk_Privilege(mk_token("Server"),<login>);
+RootServer = mk_Privilege(mk_token("Server"),<root>);
+ReadDatabase = mk_Privilege(mk_token("Dbase"),<read>);
+WriteDatabase = mk_Privilege(mk_token("Dbase"),<write>);
+AppendDatabase = mk_Privilege(mk_token("Dbase"),<append>);
+
+chris:Person = mk_token("chris");
+sam:Person = mk_token("sam");
+pat:Person = mk_token("pat");
+
+alloc1: Allocation = { chris |-> {ReadFile1,WriteFile1,AppendFile2},
+                       sam |-> {ReadFile1,WriteFile1,LoginServer,RootServer},
+                       pat |-> {AppendFile2,LoginServer,WriteDatabase,AppendDatabase}};
+       
+types
+
+Policy :: partitions : set of (set of Privilege)
+          min: map Privilege to nat
+          max: map Privilege to nat;
+          
+values
+policy1: Policy = mk_Policy({{ReadFile2, AppendFile2},
+		 												 {ReadFile1,ReadFile2},
+		 												 {ReadDatabase,AppendDatabase}},
+                            {ReadFile1 |-> 1, RootServer |-> 1},
+                            {LoginServer |-> 4, RootServer |-> 2});     
+                                    
+state Organisation of
+  policy : Policy
+  alloc : Allocation
+  init org == 
+      org = mk_Organisation(policy1,alloc1)
+end
+
+                         
+functions
+
+NumAllocated: Privilege * Allocation -> nat
+	
+
+operations
