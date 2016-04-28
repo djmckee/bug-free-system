@@ -63,6 +63,10 @@ end
 functions
 	NumAllocated: Privilege * Allocation -> nat
 	NumAllocated(priv, alloc) ==
+	  /*
+	   * return the cardinality of the number of people in the 
+	   * allocation have the privillage allocated to them.
+	   */
 		card {x | x in set dom alloc & priv in set alloc(x)}
 
 
