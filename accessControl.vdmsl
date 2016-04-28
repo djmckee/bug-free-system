@@ -118,7 +118,8 @@ operations
 		 */
 		 Organisation.alloc(person) := Organisation.alloc(person) union {priv}
 		 -- This precondition checks the allocations constraint to ensure that it is safe to add.
-		 pre (NumAllocated(priv, Organisation.alloc) >= Organisation.policy.max(priv));
+		 pre (NumAllocated(priv, Organisation.alloc) >= Organisation.policy.max(priv))
+		 and CheckSeperationOfDutiesConstraint(Organisation.policy, Organisation.alloc);
 		 
 		 
 	RevokePriv:  Person * Privilege ==> ()
