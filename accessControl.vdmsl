@@ -118,7 +118,8 @@ operations
 		 */
 		 Organisation.alloc(person) := Organisation.alloc(person) union {priv};
 		 -- TODO: Add precondition to check sepertaion of duties constraint!
-		 
+		 /*pre NumAllocated(priv, Organisation.alloc) >= Organisation.policy.max(priv) and 
+		 			NumAllocated(priv, Organisation.alloc) =< Organisation.policy.min(priv);*/
 		 
 		 
 	RevokePriv:  Person * Privilege ==> ()
