@@ -63,12 +63,30 @@ end
 functions
 	NumAllocated: Privilege * Allocation -> nat
 	NumAllocated(priv, alloc) ==
-	  /*
-	   * return the cardinality of the number of people in the 
+	  /**
+	   * Return the cardinality of the number of people in the 
 	   * allocation have the privillage allocated to them.
 	   */
-		card {x | x in set dom alloc & priv in set alloc(x)}
+		card {x | x in set dom alloc & priv in set alloc(x)};
 
 
 operations
-
+	AddPriv:  Person * Privilege ==> ()
+	AddPriv(person, priv) ==
+		/**
+		 * Add the specified privilege to the person's set of privilages within
+		 * the organisation by performing a set union between a set of the person's current
+		 * privilages, and a set containing the new privilage to add.
+		 */
+		 Organisation.alloc(person) := Organisation.alloc(person) union {priv};
+		 -- TODO: Add precondition!
+		 
+	RevokePriv:  Person * Privilege ==> ()
+	RevokePriv(person, priv) ==
+		/**
+		 * Remove the specified privilege to the person's set of privilages within
+		 * the organisation by performing a set difference operation between the person's
+		 * current privilages and the privilage to remove.
+		 */
+		 Organisation.alloc(person) := Organisation.alloc(person) \ {priv};
+		 -- TODO: Add precondition!
