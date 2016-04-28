@@ -115,10 +115,11 @@ operations
 		 * in terms of allocation boundaries (i.e. has been allocated less than the max. times allocated), and 
 		 * in terms of satisfying the seperation of duties constraint, before executing to actually
 		 * add the privilage to the person's privilages within the organisation.
+		 *
 		 */
 		 Organisation.alloc(person) := Organisation.alloc(person) union {priv}
-		 -- This precondition checks the allocations constraint to ensure that it is safe to add.
-		 pre (NumAllocated(priv, Organisation.alloc) >= Organisation.policy.max(priv))
+		 -- This precondition checks the allocations constraint to ensure that it is safe to add the privilage.
+		 pre (NumAllocated(priv, Organisation.alloc) < Organisation.policy.max(priv))
 		 and CheckSeperationOfDutiesConstraint(Organisation.policy, Organisation.alloc);
 		 
 		 
@@ -128,9 +129,17 @@ operations
 		 * Remove the specified privilege to the person's set of privilages within
 		 * the organisation by performing a set difference operation between the person's
 		 * current privilages and the privilage to remove.
+		 *
+		 * This operation uses a precondition to ensure that the privilage being added can be removed
+		 * in terms of allocation boundaries (i.e. has been allocated more than the min. times allocated), and 
+		 * in terms of satisfying the seperation of duties constraint, before executing to actually
+		 * removing the privilage from the person's privilages within the organisation.
+		 *
 		 */
-		 Organisation.alloc(person) := Organisation.alloc(person) \ {priv};
-		 -- TODO: Don't revoke if the privilage can't be removed safely...
+		 Organisation.alloc(person) := Organisation.alloc(person) \ {priv}
+		 -- This precondition checks the allocations constraint to ensure that it is safe to remove the privilage.
+		 pre (NumAllocated(priv, Organisation.alloc) > Organisation.policy.min(priv))
+		 and CheckSeperationOfDutiesConstraint(Organisation.policy, Organisation.alloc);
 		 
 		 
 		 
