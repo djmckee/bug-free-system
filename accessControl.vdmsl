@@ -112,14 +112,13 @@ operations
 		 * privilages, and a set containing the new privilage to add.
 		 * 
 		 * This operation uses a precondition to ensure that the privilage being added can be added
-		 * in terms of allocation boundaries (i.e. within the min and max times allocated), and 
+		 * in terms of allocation boundaries (i.e. has been allocated less than the max. times allocated), and 
 		 * in terms of satisfying the seperation of duties constraint, before executing to actually
 		 * add the privilage to the person's privilages within the organisation.
 		 */
-		 Organisation.alloc(person) := Organisation.alloc(person) union {priv};
-		 -- TODO: Add precondition to check sepertaion of duties constraint!
-		 /*pre NumAllocated(priv, Organisation.alloc) >= Organisation.policy.max(priv) and 
-		 			NumAllocated(priv, Organisation.alloc) =< Organisation.policy.min(priv);*/
+		 Organisation.alloc(person) := Organisation.alloc(person) union {priv}
+		 -- This precondition checks the allocations constraint to ensure that it is safe to add.
+		 pre (NumAllocated(priv, Organisation.alloc) >= Organisation.policy.max(priv));
 		 
 		 
 	RevokePriv:  Person * Privilege ==> ()
