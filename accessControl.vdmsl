@@ -95,12 +95,12 @@ functions
 		 * Ensure that no person can have more than one privilege from a partition. Return true if
 		 * the constraint has been met, or false if it has not been satisfied.
 		 *
-		 * Checking for this constraint by using set comprenension to loop through each policy partition, 
+		 * Checking for this constraint by using set comprenension to loop through each person within the allocation, 
 		 * and ensuring that only a maximum of one of the privilages within each partition has been applied
-		 * for each person within the system.
+		 * for each person within the allocation.
 		 */
-		 card {privilage_group_set | privilage_group_set in set policy.partitions & 
-			forall x, y in set privilage_group_set & not (NumAllocated(x, alloc) = 1 and NumAllocated(y, alloc) = 1)} = 0;
+		 card {person | person in set dom alloc & forall partition in set policy.partitions & 
+			forall x, y in set partition & not (NumAllocated(x, alloc) = 1 and NumAllocated(y, alloc) = 1)} = 0;
 		 
 		 
 operations
