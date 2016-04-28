@@ -61,8 +61,10 @@ end
 
                          
 functions
+	NumAllocated: Privilege * Allocation -> nat
+	NumAllocated(priv, alloc) ==
+		card {x | x in set dom alloc & priv in set alloc(x)}
 
-NumAllocated: Privilege * Allocation -> nat
-	
 
 operations
+
