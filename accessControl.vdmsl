@@ -82,6 +82,7 @@ functions
 		 * as specified in the policy. Return true if the allocation amount is valid, or false if it
 		 * is invalid.
 		 */
+		 -- TODO: Implement
 		 true;
 		 
 	CheckSeperationOfDutiesConstraint: Policy * Allocation -> bool
@@ -90,6 +91,7 @@ functions
 		 * Ensure that no person can have more than one privilege from a partition. Return true if
 		 * the constraint has been met, or false if it has not been satisfied.
 		 */
+		 -- TODO: Implement
 		 true;
 
 operations
