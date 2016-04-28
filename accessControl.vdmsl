@@ -8,6 +8,9 @@
 
 -- Modified by Dylan McKee on 02/04/2016.
 
+-- I used the lecture notes, along with the following book, to help me understand VDM fully and complete this coursework:
+-- Fitzgerald, J. (2009) Modelling Systems. Second Edition. Cambridge: Cambridge University Press. 
+
 
 types
 Action = <read>|<write>|<append>|<login>|<root>;
