@@ -46,11 +46,11 @@ Policy :: partitions : set of (set of Privilege)
           max: map Privilege to nat;
           
 values
-policy1: Policy = mk_Policy({{ReadFile2, AppendFile2},
+policy1: Policy = mk_Policy({{ReadFile2, AppendFile2},  -- partitions
 		 												 {ReadFile1,ReadFile2},
 		 												 {ReadDatabase,AppendDatabase}},
-                            {ReadFile1 |-> 1, RootServer |-> 1},
-                            {LoginServer |-> 4, RootServer |-> 2});     
+                            {ReadFile1 |-> 1, RootServer |-> 1}, -- max mapping
+                            {LoginServer |-> 4, RootServer |-> 2});  -- min mapping   
                                     
 state Organisation of
   policy : Policy
@@ -73,7 +73,7 @@ functions
 	   * Return the cardinality of the number of people in the 
 	   * allocation have the privillage allocated to them.
 	   */
-		card {x | x in set dom alloc & priv in set alloc(x)};
+		card {person | person in set dom alloc & priv in set alloc(person)};
 		
 	CheckAllocationBounds: Policy * Allocation -> bool
 	CheckAllocationBounds(policy, alloc) ==
@@ -83,6 +83,8 @@ functions
 		 * is invalid.
 		 */
 		 -- TODO: Implement
+		 
+		 
 		 true;
 		 
 	CheckSeperationOfDutiesConstraint: Policy * Allocation -> bool
@@ -90,10 +92,15 @@ functions
 		/**
 		 * Ensure that no person can have more than one privilege from a partition. Return true if
 		 * the constraint has been met, or false if it has not been satisfied.
+		 *
+		 * Checking for this constraint by using set comprenension to loop through each policy partition, 
+		 * and ensuring that only a maximum of one of the privilages within each partition has been applied.
 		 */
 		 -- TODO: Implement
-		 true;
-
+		 card {privilage_group_set | privilage_group_set in set policy.partitions & 
+			forall x, y in set privilage_group_set & not (NumAllocated(x, alloc) = 1 and NumAllocated(y, alloc) = 1)} = 0;
+		 
+		 
 operations
 	AddPriv:  Person * Privilege ==> ()
 	AddPriv(person, priv) ==
@@ -103,7 +110,7 @@ operations
 		 * privilages, and a set containing the new privilage to add.
 		 */
 		 Organisation.alloc(person) := Organisation.alloc(person) union {priv};
-		 -- TODO: Add precondition!
+		 -- TODO: Add precondition to check sepertaion of duties constraint!
 		 
 	RevokePriv:  Person * Privilege ==> ()
 	RevokePriv(person, priv) ==
