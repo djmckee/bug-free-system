@@ -89,4 +89,4 @@ operations
 		 * current privilages and the privilage to remove.
 		 */
 		 Organisation.alloc(person) := Organisation.alloc(person) \ {priv};
-		 -- TODO: Add precondition!
+		 -- TODO: Don't revoke if the privilage can't be removed safely...
